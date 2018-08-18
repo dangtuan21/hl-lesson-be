@@ -1,0 +1,40 @@
+{
+  "name": "swagger-node-express-for-existing-apis-tutorial",
+  "version": "1.0.0",
+  "description": "Beginner guide to setting up swagger-ui for node apis",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shawngong/Swagger-Node-Express-For-Existing-APIs"
+  },
+  "keywords": [
+    "node.js",
+    "app",
+    "swagger",
+    "swagger-ui",
+    "swagger-node",
+    "swagger-node-express",
+    "tutorial"
+  ],
+  "author": "shawn gong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shawngong/Swagger-Node-Express-For-Existing-APIs/issues"
+  },
+  "homepage": "https://github.com/shawngong/Swagger-Node-Express-For-Existing-APIs/blob/master/README.md",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "lodash": "^4.16.4",
+    "minimist": "^1.2.0",
+    "mongoose": "^5.0.12",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "swagger-node-express": "^2.1.3",
+    "validator": "^10.5.0"
+  }
+}
