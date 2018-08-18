@@ -5,21 +5,21 @@ const passport = require('passport');
 const axios = require("axios");
 const util = require("../common/util.js");
 
-// Course model
-const Course = require('../models/Course');
+// Lesson model
+const Lesson = require('../models/Lesson');
 
 // Load Validation
-const validateCourseInput = require('../validation/course');
+const validateLessonInput = require('../validation/lesson');
 
-// @route   GET course/test
-// @desc    Tests Course route
+// @route   GET lesson/test
+// @desc    Tests Lesson route
 // @access  Public
 router.get('/test', (req, res) => {
-  res.json({ msg: 'Course Works' });
+  res.json({ msg: 'Lesson Works' });
 });
 
-// @route   GET course/search/:searchTerm/:userEmail
-// @desc    Search course
+// @route   GET lesson/search/:searchTerm/:userEmail
+// @desc    Search lesson
 // @access  Public
 router.get('/search/:searchTerm/:userEmail',
   (req, res) => {
@@ -47,25 +47,25 @@ router.get('/search/:searchTerm/:userEmail',
       }
 
       console.log('filter ', filter);
-      Course.find(filter)
+      Lesson.find(filter)
         .sort({ 'createdDate': -1 })
         .limit(PAGE_LIMIT)
-        .then(courses => {
-          console.log('courses ', courses);
-          if (!courses) {
+        .then(lessons => {
+          console.log('lessons ', lessons);
+          if (!lessons) {
             errors = {
               code: 404,
-              message: 'There are no courses',
+              message: 'There are no lessons',
             }
             console.log(errors.message);
             return res.status(404).json(errors);
           }
-          res.json(courses);
+          res.json(lessons);
         })
         .catch(err => {
           errors = {
             code: 404,
-            message: 'There are no courses',
+            message: 'There are no lessons',
           }
           res.status(404).json(errors);
         }
@@ -73,22 +73,22 @@ router.get('/search/:searchTerm/:userEmail',
     });
   });
 
-// @route   GET course/:id/:userEmail
-// @desc    Get course by id and userEmail
+// @route   GET lesson/:id/:userEmail
+// @desc    Get lesson by id and userEmail
 // @access  Public
 router.get('/:id/:userEmail', (req, res) => {
   const id = req.params.id;
   const userEmail = req.params.userEmail;
   console.log('Get Task with userEmail ', userEmail);
   util.connectDatabaseByUserEmail(userEmail, () => {
-    Course.findById(id)
-      .then(course => {
-        res.json(course);
+    Lesson.findById(id)
+      .then(lesson => {
+        res.json(lesson);
       })
       .catch(err => {
         errors = {
           code: 404,
-          message: 'There are no courses',
+          message: 'There are no lessons',
         }
         res.status(404).json(errors);
       }
@@ -96,8 +96,8 @@ router.get('/:id/:userEmail', (req, res) => {
   });
 });
 
-// @route   POST course
-// @desc    Add course 
+// @route   POST lesson
+// @desc    Add lesson 
 // @access  Private
 router.post(
   '/',
@@ -107,7 +107,7 @@ router.post(
     const userEmail = req.body.userEmail;
     util.connectDatabaseByUserEmail(userEmail, () => {
 
-      const { errors, isValid } = validateCourseInput(req.body);
+      const { errors, isValid } = validateLessonInput(req.body);
       // Check Validation
       if (!isValid) {
         // Return any errors with 400 status
@@ -115,44 +115,44 @@ router.post(
       }
 
       if (id === undefined) {
-        //create new course
-        const newCourse = new Course({
+        //create new lesson
+        const newLesson = new Lesson({
           description: req.body.description,
           code: req.body.code,
           name: req.body.name,
           learningMethod: req.body.learningMethod,
           createdDate: req.body.createdDate,
         });
-        newCourse.save()
-          .then(course => res.json(course))
-          .catch(err => res.status(404).json({ coursenotfound: 'Can not create' }));
+        newLesson.save()
+          .then(lesson => res.json(lesson))
+          .catch(err => res.status(404).json({ lessonnotfound: 'Can not create' }));
       }
       else {
-        //update course
-        const courseFields = {};
+        //update lesson
+        const lessonFields = {};
         if (req.body.description)
-          courseFields.description = req.body.description;
+          lessonFields.description = req.body.description;
         if (req.body.code)
-          courseFields.code = req.body.code;
+          lessonFields.code = req.body.code;
         if (req.body.name)
-          courseFields.name = req.body.name;
+          lessonFields.name = req.body.name;
         if (req.body.learningMethod)
-          courseFields.learningMethod = req.body.learningMethod;
+          lessonFields.learningMethod = req.body.learningMethod;
         if (req.body.createdDate)
-          courseFields.createdDate = req.body.createdDate;
+          lessonFields.createdDate = req.body.createdDate;
 
-        Course.findOneAndUpdate(
+        Lesson.findOneAndUpdate(
           { _id: id },
-          { $set: courseFields },
+          { $set: lessonFields },
           { new: true }
-        ).then(course => res.json(course));
+        ).then(lesson => res.json(lesson));
       }
     });
   }
 );
 
-// @route   DELETE api/course/:id
-// @desc    Delete course
+// @route   DELETE api/lesson/:id
+// @desc    Delete lesson
 // @access  Private
 router.delete(
   '/:id/:userEmail',
@@ -168,16 +168,16 @@ router.delete(
       };
 
       console.log('delete with filter ', filter);
-      Course.findOne(filter)
-        .then(course => {
+      Lesson.findOne(filter)
+        .then(lesson => {
           // Delete
-          console.log('found ', course);
-          course.remove().then(() => res.json({ success: true }));
+          console.log('found ', lesson);
+          lesson.remove().then(() => res.json({ success: true }));
         })
         .catch(err => {
           errors = {
             code: 404,
-            message: 'There are no courses',
+            message: 'There are no lessons',
           }
           res.status(404).json(errors);
         }

@@ -3,7 +3,7 @@
 var express = require( 'express' );
 var argv = require('minimist')(process.argv.slice(2));
 var bodyParser = require( 'body-parser' );
-const course = require('./routes/course');
+const lesson = require('./routes/lesson');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const axios = require("axios");
@@ -56,7 +56,7 @@ app.use(passport.initialize());
 // Passport Config
 require('./config/passport')(passport);
     
-app.use('/course', course);
+app.use('/lesson', lesson);
 
 // Server static assets if in production
 if (process.env.REACT_APP_RUNNING_ENV === 'production') {
@@ -81,4 +81,4 @@ console.log('snapJob API running on ' + applicationUrl);
 swagger.configure(applicationUrl, '1.0.0');
 
 // Start the web server
-app.listen(port, () => console.log(`Course service running on port ${port}`));
+app.listen(port, () => console.log(`Lesson service running on port ${port}`));
