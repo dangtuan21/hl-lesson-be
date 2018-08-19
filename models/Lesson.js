@@ -39,6 +39,40 @@ const LessonSchema = new Schema({
   createdDate: {
     type: Date
   },
+
+  sections: [
+    {
+      _id: String,
+      name: {
+        type: String
+      },
+      description: {
+        type: String
+      },
+      sequence: {
+        type: Number
+      },
+      units: [
+        {
+          _id: String,
+          name: {
+            type: String
+          },
+          description: {
+            type: String
+          },
+          unitType: { //1=Document, 2=Test
+            type: Number
+          },
+          sequence: {
+            type: Number
+          },
+        }
+      ],  
+          
+    }
+  ],  
+  
 });
 
 module.exports = Lesson = mongoose.model('lesson', LessonSchema);
